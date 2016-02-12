@@ -1,0 +1,66 @@
+int NUMSENSORS = 14;
+int STAIRWIDTH = 70;
+int sensorDepths[NUMSENSORS];
+int triggeredStairs[NUMSENSORS];
+ 
+void setup() 
+{
+  pinMode(3, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() 
+{
+  readSensors();
+  triggerLogic();
+  multipleTriggerLogic();
+
+  reset();
+ Serial.println(p0 + sensor0);
+ Serial.println(p1 + sensor1);
+ 
+ delay(500);  
+}
+
+void readSensors()
+{
+  digitalWrite(3, HIGH);
+  delay(1);
+  digitalWrite(3, LOW);
+
+  for(int i = 0; i < NUMSENSORS; i++)
+  {
+    sensorDepths[i] =(analogRead(i)*4.9)/9.8;
+  }
+
+}
+
+/* should we just add this logic to the readSensors logic? to limit looping through the data again? */
+void triggerLogic()
+{
+  for(int i = 0; i < NUMSENSORS; i++)
+  {
+    if(sensorDepths[i] < STAIRWIDTH) { triggeredStairs[i] = 1; }
+    else { triggeredStairs[i] = 0; }
+  }
+}
+/* need to handle edge cases of sensor 1 and 14 */
+void multipleTriggerLogic()
+{
+  for(int i = 0; i < NUMSENSORS; i++)
+  {
+    if(triggeredStairs[i] == 1)
+    {
+    
+    }
+  }
+}
+
+void reset()
+{
+  for(int i = 0; i < NUMSENSORS; i++)
+  {
+    sensorDepths[i] = STAIRWIDTH + 1;
+    triggeredStairs[i] = 0;
+  }
+}
